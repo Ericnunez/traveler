@@ -1,0 +1,237 @@
+$background-color: #0a2540;
+$primary-color: rgb(0, 212, 255);
+$secondary-background-color: #0c2e4e;
+$border: #0f395e;
+$gray: #f6f9fc;
+
+* {
+  font-family: "Open Sans", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: $gray;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='248' height='248' viewBox='0 0 800 800'%3E%3Cg fill='none' stroke='%23d3d3d3' stroke-width='1'%3E%3Cpath d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/%3E%3Cpath d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/%3E%3Cpath d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/%3E%3Cpath d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/%3E%3Cpath d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/%3E%3C/g%3E%3Cg fill='%23f3f0f4'%3E%3Ccircle cx='769' cy='229' r='5'/%3E%3Ccircle cx='539' cy='269' r='5'/%3E%3Ccircle cx='603' cy='493' r='5'/%3E%3Ccircle cx='731' cy='737' r='5'/%3E%3Ccircle cx='520' cy='660' r='5'/%3E%3Ccircle cx='309' cy='538' r='5'/%3E%3Ccircle cx='295' cy='764' r='5'/%3E%3Ccircle cx='40' cy='599' r='5'/%3E%3Ccircle cx='102' cy='382' r='5'/%3E%3Ccircle cx='127' cy='80' r='5'/%3E%3Ccircle cx='370' cy='105' r='5'/%3E%3Ccircle cx='578' cy='42' r='5'/%3E%3Ccircle cx='237' cy='261' r='5'/%3E%3Ccircle cx='390' cy='382' r='5'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+main {
+  flex: 1;
+}
+.title {
+  font-family: "Noto Serif";
+  letter-spacing: 2px;
+  font-weight: normal;
+}
+
+.primary-custom {
+  color: $primary-color;
+  font-family: "Roboto", sans-serif;
+}
+
+.primary-custom-btn {
+  background-color: $background-color;
+  color: white;
+  position: relative;
+  // display: inline-block;
+  &:not(.active) {
+    color: white;
+    &:hover {
+      background-color: #c2c8cf;
+    }
+  }
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.banner {
+  color: black;
+}
+
+.banner-bg {
+  position: relative;
+  // object-fit: cover;
+  h1,
+  p {
+    text-shadow: 2px 2px 4px #000000;
+  }
+}
+
+.banner-bg::before {
+  content: "";
+  background-image: url("./images/road.jpg");
+  background-position: center;
+  position: absolute;
+  object-fit: cover;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.85;
+  width: 100%;
+  height: 100%;
+}
+
+.section-custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.card-header-custom {
+  background-color: $background-color;
+  color: white;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.profile {
+  align-items: unset;
+}
+
+.profile-page-lower {
+  min-height: 80%;
+}
+
+.section-viewlist {
+  background-color: $background-color;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+
+  .container {
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.white-card {
+  background-color: white;
+  color: black;
+}
+
+.list-table {
+  background-color: white;
+  border-color: $border;
+  min-height: auto;
+}
+.table {
+  table-layout: auto;
+}
+
+.table-viewlist {
+  table-layout: auto;
+}
+
+.table-viewlist thead th:last-child {
+  width: 100%;
+}
+.landing {
+  .cover {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+.cover {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+.card-deck {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.card-title {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 450px;
+  padding: 2.5em;
+  margin: auto;
+}
+
+.image-upload-container {
+  transition-timing-function: ease-in;
+
+  /* Quick on the way out */
+  transition: 0.2s;
+
+  /* Hide thing by pushing it outside by default */
+  transform: translateY(130%);
+}
+
+.nav-tabs {
+  border-bottom: 0 solid transparent;
+  border-radius: 0.25rem;
+  background: #e9ecef;
+  .nav-item {
+    margin: 0.5rem;
+  }
+  .nav-link {
+    border-bottom: 0 solid transparent;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    transition: color 0.35s ease-out;
+    &:not(.active) {
+      color: rgba(33, 37, 41, 0.5);
+      &:hover {
+        color: $background-color;
+      }
+    }
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+}
+
+.most-liked {
+  background-image: url("./images/road.jpg");
+}
+
+footer {
+  background-color: $background-color;
+  a {
+    font-family: "Roboto", sans-serif;
+    transition: color 0.35s ease-out;
+    &:not(.active) {
+      color: #bbbac6;
+      &:hover {
+        color: white;
+        text-decoration: none;
+      }
+    }
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+  h4 {
+    text-transform: uppercase;
+    font-size: 1em;
+    color: white;
+  }
+  hr {
+    background-color: white;
+    margin-top: 0;
+  }
+}
+.edge {
+  background-color: transparent;
+}
