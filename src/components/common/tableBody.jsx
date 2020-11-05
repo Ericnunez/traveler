@@ -8,7 +8,7 @@ class TableBody extends Component {
     if (column.path === "publishDate") {
       const time = _.get(item, column.path);
       const timeArray = time.toDate().toString().split(" ");
-      return _.dropRight(timeArray, 4).join(" ");
+      return _.dropRight(timeArray, 6).join(" ");
     }
     return _.get(item, column.path);
   };

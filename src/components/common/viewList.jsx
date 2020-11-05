@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import imagePlaceholder from "../../images/road.jpg";
 import LikeButton from "./likeButton";
 import { firestore, incrementLikes } from "../../firebase/firebase";
+import shortid from "shortid";
 
 class ViewList extends Component {
   constructor(props) {
@@ -117,7 +118,7 @@ class ViewList extends Component {
                 </thead>
                 <tbody>
                   {itemArray.map((item, index) => (
-                    <tr key={item + Math.floor(Math.random() * 101)}>
+                    <tr key={item + shortid.generate}>
                       <th className="text-center" scope="row">
                         {index + 1}
                       </th>

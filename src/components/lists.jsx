@@ -108,7 +108,7 @@ class Lists extends Component {
     const { length: count } = this.state.lists;
     const { pageSize, currentPage, sortColumn, searchQuery } = this.state;
 
-    if (count === 0) return <p>There are no lists here</p>;
+    if (count === 0) return <p>There are no lists here!</p>;
 
     const { totalCount, data: lists } = this.getPageData();
     return (
