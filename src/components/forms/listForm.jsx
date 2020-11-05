@@ -145,7 +145,7 @@ class ListForm extends Form {
             </div>
           </div>
         </div>
-        <section className=" section-custom">
+        <section className="">
           <div className="container mt-4 pt-4 pb-4 card shadow ">
             <h1 className="display-5 text-center pb-4">
               Create a List...it can be anything

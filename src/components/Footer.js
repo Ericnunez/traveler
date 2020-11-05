@@ -5,7 +5,7 @@ class Footer extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="edge">
+        <div className="edge mt-auto">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
             <path
               fill="#0a2540"
@@ -13,25 +13,25 @@ class Footer extends Component {
               d="M0,200L1440,120L01440,20L0,100Z"
             ></path>
           </svg>
-        </div>
-        <footer className="footer mt-auto py-3 ">
-          <div className="container">
-            <div className="row">
-              <div className="col-sm-6 text-muted">
-                <h4>About</h4>
-                <ul className="list-unstyled">
-                  <li>
-                    <Link to="/about">How Roadtripper Works</Link>
-                  </li>
-                </ul>
+          <footer className="footer py-3">
+            <div className="container">
+              <div className="row">
+                <div className="col-sm-6 text-muted">
+                  <h4>About</h4>
+                  <ul className="list-unstyled">
+                    <li>
+                      <Link to="/about">How Roadtripper Works</Link>
+                    </li>
+                  </ul>
+                </div>
               </div>
+              <hr />
+              <h6 className="text-muted">
+                © 2020 Roadtripper lists - a fun project
+              </h6>
             </div>
-            <hr />
-            <h6 className="text-muted">
-              © 2020 Roadtripper lists - a fun project
-            </h6>
-          </div>
-        </footer>
+          </footer>
+        </div>
       </React.Fragment>
     );
   }

@@ -57,10 +57,10 @@ class Register extends Form {
     const { registerError } = this.state;
     return (
       <React.Fragment>
-        <section className="section-custom">
-          <div className="container mt-4 mb-4 form-signin card shadow">
-            <h2 className="text-center">Logo Here</h2>
+        <section className="form-container">
+          <div className="container form-signin card shadow">
             <h1 className="text-center">Roadtripper</h1>
+            <h5 className="text-center">Register</h5>
             <form className="" onSubmit={this.handleSubmit}>
               {this.renderInput("email", "Email")}
               {this.renderInput("name", "Name")}

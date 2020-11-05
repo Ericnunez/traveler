@@ -251,12 +251,13 @@ class UpdateForm extends Form {
                   </button>
                   {this.state.showFileUpload && (
                     <React.Fragment>
-                      <div className="card-header-custom mt-2">
+                      <div className="card-header-custom mt-2 mb-2">
                         <div className="lead text-center">
                           Make your list pop!
                         </div>
                       </div>
                       <input
+                        className="mb-2"
                         onChange={(event) => {
                           this.handleFileSelect(event);
                         }}

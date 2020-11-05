@@ -112,11 +112,13 @@ class Lists extends Component {
 
     const { totalCount, data: lists } = this.getPageData();
     return (
-      <section className="section-custom">
-        <div className="container list-table shadow p-4 mb-3">
+      <section className="section">
+        <div className="container pt-3 list-table shadow">
           <div className="row">
             <div className="col">
-              <p>Showing {totalCount} total lists, have fun!</p>
+              <p className="lead">
+                Showing {totalCount} total lists, have fun!
+              </p>
               <SearchBox
                 value={searchQuery}
                 onChange={this.handleSearch}

@@ -6,7 +6,7 @@ class Navbar extends Component {
   render() {
     const { user } = this.props;
     return (
-      <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-0 bg-white border-bottom shadow-sm">
+      <div className="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-0 bg-white border-bottom shadow-sm text-center">
         <Link to="/home" className="my-0 mr-md-auto ">
           Roadtripper
         </Link>

@@ -61,7 +61,7 @@ class ProfilePage extends Component {
   render() {
     const { user } = this.props;
     return (
-      <section className="section-custom profile">
+      <section className="profile">
         <article className="container p-5">
           <div className="row flex-md-row h-md-250 p-3">
             <div className="d-flex justify-content-center flex-wrap">

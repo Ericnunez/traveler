@@ -1,6 +1,5 @@
 import React from "react";
 import Joi from "joi-browser";
-// import { Redirect } from "react-router-dom";
 import Form from "../components/forms/form";
 import { auth } from "../firebase/firebase";
 
@@ -33,27 +32,29 @@ class Login extends Form {
           this.setState({
             signinError: error.code.replace("auth/", ""),
           });
+        setTimeout(() => {
+          window.location = state ? state.from.pathname : "/login";
+        }, 1500);
       });
     const { state } = this.props.location;
-    // console.log(state);
     window.location = state ? state.from.pathname : "/";
   };
 
   render() {
     const { signinError } = this.state;
-    // if (auth.) return <Redirect to="/" />;
+    if (localStorage.getItem("uid")) window.location = "/";
     return (
       <React.Fragment>
-        <section className="section-custom">
-          <div className="container mt-4 mb-4 form-signin card shadow">
-            <h2 className="text-center">Logo Here</h2>
+        <section className="form-container ">
+          <div className="container form-signin card shadow">
             <h1 className="text-center">Roadtripper</h1>
+            <h5 className="text-center">Login</h5>
             <form className="" onSubmit={this.handleSubmit}>
               {this.renderInput("email", "Email")}
               {this.renderInput("password", "Password")}
               {this.renderButton("login", "btn-block")}
             </form>
-            <p>Forgot your password?</p>
+
             {signinError && (
               <div className="alert alert-danger mt-1">{signinError}</div>
             )}

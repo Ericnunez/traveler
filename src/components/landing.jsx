@@ -9,8 +9,8 @@ class Landing extends Component {
   render() {
     return (
       <React.Fragment>
-        <Banner />
         <section className="section">
+          <Banner />
           <div className="container">
             <h3 className="text-center pb-3 pt-3">
               There are lists for virtually anything...

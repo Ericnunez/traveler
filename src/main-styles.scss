@@ -39,7 +39,6 @@ main {
   background-color: $background-color;
   color: white;
   position: relative;
-  // display: inline-block;
   &:not(.active) {
     color: white;
     &:hover {
@@ -58,7 +57,6 @@ main {
 
 .banner-bg {
   position: relative;
-  // object-fit: cover;
   h1,
   p {
     text-shadow: 2px 2px 4px #000000;
@@ -132,6 +130,12 @@ main {
 .table-viewlist {
   table-layout: auto;
 }
+.table-ellipse {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
 
 .table-viewlist thead th:last-child {
   width: 100%;
@@ -161,9 +165,13 @@ main {
 
 .form-signin {
   width: 100%;
-  max-width: 450px;
-  padding: 2.5em;
+  max-width: 400px;
+  padding: 1.5rem;
   margin: auto;
+}
+.form-container {
+  // display: flex;
+  // height: 100%;
 }
 
 .image-upload-container {
@@ -234,4 +242,11 @@ footer {
 }
 .edge {
   background-color: transparent;
+}
+
+@media only screen and (min-width: 700px) {
+  .form-container {
+    display: flex;
+    height: 100%;
+  }
 }

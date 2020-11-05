@@ -78,7 +78,7 @@ class ViewList extends Component {
     const { data, itemArray } = this.state;
 
     return (
-      <section className="section-custom">
+      <section className="">
         <div className="container d-flex flex-column px-4">
           <h2 className="title text-center p-3">{data.title}</h2>
 
