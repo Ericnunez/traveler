@@ -8,7 +8,7 @@ class TableBody extends Component {
     if (column.path === "publishDate") {
       const time = _.get(item, column.path);
       const timeArray = time.toDate().toString().split(" ");
-      return _.dropRight(timeArray, 6).join(" ");
+      return _.dropRight(timeArray, 4).join(" ");
     }
     return _.get(item, column.path);
   };
@@ -27,7 +27,7 @@ class TableBody extends Component {
           <tr key={item.id}>
             {columns.map((column) => (
               <td
-                className={column.path === "description" ? truncate : ""}
+                className={` ${column.path === "description" ? truncate : ""}`}
                 key={this.createKey(item, column)}
               >
                 {this.renderCell(item, column)}
