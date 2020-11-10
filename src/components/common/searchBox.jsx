@@ -3,7 +3,7 @@ import React from "react";
 const SearchBox = ({ value, onChange }) => {
   return (
     <React.Fragment>
-      <div className="input-group">
+      <div className="input-group mb-3">
         <div className="input-group-prepend">
           <div className="input-group-text">
             <i className="fa fa-search"></i>

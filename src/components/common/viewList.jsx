@@ -1,8 +1,14 @@
 import React, { Component } from "react";
 import imagePlaceholder from "../../images/road.jpg";
 import LikeButton from "./likeButton";
-import { firestore, incrementLikes } from "../../firebase/firebase";
+import {
+  firestore,
+  incrementLikes,
+  checkIfUserLikedList,
+  addUserToLikedList,
+} from "../../firebase/firebase";
 import shortid from "shortid";
+import LikeCounter from "./LikeCounter";
 
 class ViewList extends Component {
   constructor(props) {
@@ -14,6 +20,7 @@ class ViewList extends Component {
   state = {
     data: {},
     itemArray: [],
+    userLiked: false,
   };
 
   componentDidMount() {
@@ -42,6 +49,7 @@ class ViewList extends Component {
     getDocument(listId);
 
     this.startListener();
+    checkIfUserLikedList(listId, this.props.user.uid);
   }
 
   componentWillUnmount() {
@@ -73,64 +81,78 @@ class ViewList extends Component {
 
   handleButtonClick = (event) => {
     incrementLikes(this.listId);
+    addUserToLikedList(this.state.data.id, this.props.user.uid);
   };
 
   render() {
-    const { data, itemArray } = this.state;
+    const { data, itemArray, userLiked } = this.state;
 
     return (
-      <section className="">
-        <div className="container d-flex flex-column px-4">
-          <h2 className="title text-center p-3">{data.title}</h2>
-
-          <div className="row card flex-md-row mb-3 h-md-250 shadow p-4">
-            <div className="col col-sm">
-              <div className="">
-                {this.state.data.image === "" ? (
-                  <img src={imagePlaceholder} alt="" className="cover"></img>
-                ) : (
-                  <img src={data.image} alt="" className="cover"></img>
-                )}
+      <React.Fragment>
+        {data && (
+          <section className="">
+            <div className="container d-flex flex-column px-4">
+              <h2 className="title text-center p-3">{data.title}</h2>
+              <div className="row card flex-md-row mb-3 h-md-250 shadow p-4">
+                <div className="col col-sm">
+                  <div className="">
+                    {this.state.data.image === "" ? (
+                      <img
+                        src={imagePlaceholder}
+                        alt=""
+                        className="cover"
+                      ></img>
+                    ) : (
+                      <img src={data.image} alt="" className="cover"></img>
+                    )}
+                  </div>
+                  <div className="d-flex align-items-center pt-2">
+                    <h4 className="mt-1 pb-0 lead flex-grow-1">
+                      {data.destination}
+                    </h4>
+                    {this.props.user ? (
+                      <React.Fragment>
+                        <LikeCounter likes={data.likedAmount} />
+                        <LikeButton
+                          handleClick={this.handleButtonClick}
+                          status={data.liked}
+                          enabled={!userLiked}
+                        ></LikeButton>
+                      </React.Fragment>
+                    ) : (
+                      <LikeCounter likes={data.likedAmount} />
+                    )}
+                  </div>
+                  <hr className="mt-1" />
+                  <p className="p-1">{data.description}</p>
+                </div>
+                <div className="col col-sm">
+                  <table className="table table-viewlist table-hover table-striped">
+                    <thead>
+                      <tr>
+                        <th className="text-center" scope="col">
+                          #
+                        </th>
+                        <th scope="col">Item</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {itemArray.map((item, index) => (
+                        <tr key={item + shortid.generate()}>
+                          <th className="text-center" scope="row">
+                            {index + 1}
+                          </th>
+                          <td>{item}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-              <div className="d-flex pt-2">
-                <h4 className="mt-1 pb-0 lead flex-grow-1">
-                  {data.destination}
-                </h4>
-                <span className="  mr-2 text-center">{data.likedAmount}</span>
-                <LikeButton
-                  handleClick={this.handleButtonClick}
-                  status={data.liked}
-                ></LikeButton>
-              </div>
-
-              <hr className="mb-0" />
-              <p className="p-1">{data.description}</p>
             </div>
-            <div className="col col-sm">
-              <table className="table table-viewlist table-hover table-striped">
-                <thead>
-                  <tr>
-                    <th className="text-center" scope="col">
-                      #
-                    </th>
-                    <th scope="col">Item</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {itemArray.map((item, index) => (
-                    <tr key={item + shortid.generate}>
-                      <th className="text-center" scope="row">
-                        {index + 1}
-                      </th>
-                      <td>{item}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        )}
+      </React.Fragment>
     );
   }
 }

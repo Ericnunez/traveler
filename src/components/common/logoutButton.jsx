@@ -5,7 +5,6 @@ class LogoutButton extends Component {
   handleSignOut() {
     auth.signOut();
     localStorage.clear();
-    // localStorage.removeItem("token");
     window.location = "/";
   }
 

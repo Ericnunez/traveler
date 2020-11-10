@@ -36,7 +36,6 @@ class Form extends Component {
     this.setState({ errors: errors || {} });
     // console.log("errors", errors);
     if (errors) return;
-
     this.doSubmit();
   };
 
@@ -79,13 +78,10 @@ class Form extends Component {
   renderListFormButton(label, options) {
     let classes = "btn btn-primary shadow ";
     if (options) classes += options;
+    // data-toggle="modal"
+    //     data-target="#exampleModal"
     return (
-      <button
-        data-toggle="modal"
-        data-target="#exampleModal"
-        disabled={this.validate()}
-        className={classes}
-      >
+      <button disabled={this.validate()} className={classes}>
         {label}
       </button>
     );

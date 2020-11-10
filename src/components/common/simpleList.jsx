@@ -72,12 +72,11 @@ class SimpleList extends Component {
   };
 
   render() {
-    const { length: count } = this.state.lists;
     const { pageSize, currentPage, sortColumn } = this.state;
     const { totalCount, data: lists } = this.getPageData();
     const list = totalCount > 1 ? "lists" : "list";
 
-    if (count === 0) return <p>There are no lists here</p>;
+    // if (count === 0) return <p>There are no lists here</p>;
 
     return (
       <div className="container pt-4 list-table shadow">

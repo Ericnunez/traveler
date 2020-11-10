@@ -74,8 +74,13 @@ class ProfilePage extends Component {
               ></img>
               <article className="d-flex justify-content-center">
                 <div className="profile-user-details p-3">
-                  <h5 className="">{user.displayName}</h5>
-                  {user.email && <h6>{user.email}</h6>}
+                  {user && (
+                    <React.Fragment>
+                      <h5 className="">{user.displayName}</h5>
+                      {user.email && <h6>{user.email}</h6>}{" "}
+                    </React.Fragment>
+                  )}
+
                   <strong className="roadtripper">
                     RoadTripper Contributer
                   </strong>

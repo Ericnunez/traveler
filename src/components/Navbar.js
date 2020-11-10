@@ -1,5 +1,4 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 import LogoutButton from "./common/logoutButton";
 
@@ -13,17 +12,7 @@ const Navbar = ({ user }) => {
         <NavLink to="/lists" className="p-2 text-dark ">
           Lists
         </NavLink>
-        {!user && (
-          <React.Fragment>
-            <NavLink to="/login" className="p-2 text-dark ">
-              Login
-            </NavLink>
-            <NavLink to="/register" className="p-2 text-dark ">
-              Register
-            </NavLink>
-          </React.Fragment>
-        )}
-        {user && (
+        {user ? (
           <React.Fragment>
             <NavLink to="/create-list/new" className="p-2 text-dark ">
               Create a List
@@ -32,6 +21,15 @@ const Navbar = ({ user }) => {
               My Account
             </NavLink>
             <LogoutButton />
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <NavLink to="/login" className="p-2 text-dark ">
+              Login
+            </NavLink>
+            <NavLink to="/register" className="p-2 text-dark ">
+              Register
+            </NavLink>
           </React.Fragment>
         )}
       </nav>
