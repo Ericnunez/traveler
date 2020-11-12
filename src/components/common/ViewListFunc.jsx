@@ -65,7 +65,7 @@ const ViewListFunc = (props) => {
         });
     };
     check(userId);
-  }, []);
+  }, [data]);
 
   useEffect(() => {
     const author = data.uid;
