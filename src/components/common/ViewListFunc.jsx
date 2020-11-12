@@ -141,7 +141,10 @@ const ViewListFunc = (props) => {
                       <ShareButton />
                     </React.Fragment>
                   ) : (
-                    <LikeCounter likes={data.likedAmount} />
+                    <React.Fragment>
+                      <LikeCounter likes={data.likedAmount} />
+                      <ShareButton />
+                    </React.Fragment>
                   )}
                 </div>
                 <hr className="m-1 mb-0" />
