@@ -1,5 +1,5 @@
 * {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Signika", "Helvetica Neue", sans-serif;
 }
 
 html,
@@ -27,9 +27,8 @@ main {
 }
 
 .title {
-  font-family: "Noto Serif";
   letter-spacing: 2px;
-  font-weight: normal;
+  font-weight: 700;
 }
 
 .primary-custom {

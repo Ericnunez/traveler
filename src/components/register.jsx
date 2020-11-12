@@ -1,7 +1,11 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/forms/form";
-import { auth, generateUserDocument } from "../firebase/firebase";
+import {
+  auth,
+  generateUserDocument,
+  generateUserLikesDocument,
+} from "../firebase/firebase";
 
 class Register extends Form {
   state = {
@@ -24,13 +28,14 @@ class Register extends Form {
   }
 
   doSubmit = async () => {
-    const { email, password, name } = this.state.data;
+    const { email, password, name, registerError } = this.state.data;
     await this.createUserWithEmailAndPasswordHandler(email, password, name);
-    window.location = "/";
+    if (!registerError) {
+      window.location = "/";
+    }
   };
 
   createUserWithEmailAndPasswordHandler = async (email, password, name) => {
-    console.log(email, password, name, "");
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
@@ -39,11 +44,9 @@ class Register extends Form {
       user.updateProfile({
         displayName: name,
       });
-      localStorage.setItem("token", user.getIdToken()).catch(function (error) {
-        // An error happened.
-        console.log("Error updating user profile", error);
-      });
-      generateUserDocument(user, name);
+
+      await generateUserDocument(user, name);
+      await generateUserLikesDocument(user);
     } catch (error) {
       if (error.code)
         this.setState({

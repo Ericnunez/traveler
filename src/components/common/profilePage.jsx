@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import profilePicture from "../../images/profile-picture.png";
 import SimpleList from "./simpleList";
 import { firestore } from "../../firebase/firebase";
+import UserCard from "./UserCard";
 
 class ProfilePage extends Component {
   state = {};
@@ -64,30 +65,13 @@ class ProfilePage extends Component {
       <section className="profile">
         <article className="container p-5">
           <div className="row flex-md-row h-md-250 p-3">
-            <div className="d-flex justify-content-center flex-wrap">
-              <img
-                src={profilePicture}
-                alt="profile"
-                height="100rem"
-                width="100rem"
-                className="ml-4"
-              ></img>
-              <article className="d-flex justify-content-center">
-                <div className="profile-user-details p-3">
-                  {user && (
-                    <React.Fragment>
-                      <h5 className="">{user.displayName}</h5>
-                      {user.email && <h6>{user.email}</h6>}{" "}
-                    </React.Fragment>
-                  )}
-
-                  <strong className="roadtripper">
-                    RoadTripper Contributer
-                  </strong>
-                  <strong>{}</strong>
-                </div>
-              </article>
-            </div>
+            <UserCard
+              height="100rem"
+              width="100rem"
+              displayName={user.displayName}
+              email={user.email}
+              profilePicture={user.photoURL}
+            />
           </div>
           <hr className="mt-0" />
           <div className="row profile-page-lower">

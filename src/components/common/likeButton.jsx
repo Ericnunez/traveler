@@ -28,19 +28,18 @@ const LikeButton = (props) => {
             props.handleClick(event.currentTarget);
           }}
         >
-          <i className="fas fa-heart fa-lg"></i>
+          <i className="far fa-heart fa-lg"></i>
         </motion.button>
       ) : (
         <motion.button
           whileHover={{ scale: 1 }}
           whileTap={{ scale: 1 }}
           style={styles}
-          disabled="true"
           onClick={(event) => {
             props.handleClick(event.currentTarget);
           }}
         >
-          <i className="far fa-heart fa-lg"></i>
+          <i className="fas fa-heart fa-lg"></i>
         </motion.button>
       )}
     </motion.div>
@@ -48,13 +47,3 @@ const LikeButton = (props) => {
 };
 
 export default LikeButton;
-
-{
-  /* <motion.i
-  onTap={{ y: 1 }}
-  whileTap={{ scale: 0.9, x: "-5px", y: "5px", opacity: 1 }}
-  initial={{ scale: 0.5, opacity: 0 }}
-  animate={{ y: 1 }}
-  className="fa fa-heart fa-lg"
-></motion.i>; */
-}

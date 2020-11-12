@@ -14,18 +14,17 @@ class ViewList extends Component {
   constructor(props) {
     super(props);
     this.listId = this.props.match.params.id;
-    if (!this.listId) return this.props.history.replace("/not-found");
+    if (!this.listId) window.location = "/not-found";
     this.docRef = firestore.collection("lists").doc(this.listId);
+    this.checkIfListExists();
   }
   state = {
-    data: {},
+    data: null,
     itemArray: [],
     userLiked: false,
   };
 
   componentDidMount() {
-    // const listId = this.props.match.params.id;
-    // if (!listId) return this.props.history.replace("/not-found");
     let listId = this.listId;
     const getDocument = async (listId) => {
       // const docRef = firestore.collection("lists").doc(listId);
@@ -36,7 +35,7 @@ class ViewList extends Component {
             return doc.data();
           } else {
             // doc.data() will be undefined in this case
-            console.log("No such document!");
+            console.log("No such document cdm!");
             return this.props.history.replace("/not-found");
           }
         })
@@ -51,6 +50,20 @@ class ViewList extends Component {
     this.startListener();
     checkIfUserLikedList(listId, this.props.user.uid);
   }
+
+  checkIfListExists = async () => {
+    const response = await this.docRef
+      .get()
+      .then((doc) => {
+        if (!doc.exists) {
+          console.log("No such document check!");
+          window.location = "/not-found";
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      });
+  };
 
   componentWillUnmount() {
     console.log("Viewlist has unmounted");
@@ -92,7 +105,7 @@ class ViewList extends Component {
         {data && (
           <section className="">
             <div className="container d-flex flex-column px-4">
-              <h2 className="title text-center p-3">{data.title}</h2>
+              <h2 className="title text-center p-4">{data.title}</h2>
               <div className="row card flex-md-row mb-3 h-md-250 shadow p-4">
                 <div className="col col-sm">
                   <div className="">

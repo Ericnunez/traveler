@@ -14,6 +14,7 @@ import { auth } from "./firebase/firebase";
 import ProtectedRoute from "./components/common/protectedRoute";
 import UpdateForm from "./components/forms/updateForm";
 import About from "./components/about";
+import ViewListFunc from "./components/common/ViewListFunc";
 
 class App extends Component {
   state = { user: {} };
@@ -51,8 +52,16 @@ class App extends Component {
             <Route path="/about" component={About}></Route>
             <Route
               path="/view-list/:id"
-              render={(props) => <ViewList {...props} user={this.state.user} />}
+              render={(props) => (
+                <ViewListFunc {...props} user={this.state.user} />
+              )}
             />
+            {/* <Route
+              path="/view-listfunc/:id"
+              render={(props) => (
+                <ViewListFunc {...props} user={this.state.user} />
+              )}
+            /> */}
             <Route
               path="/profile-page"
               render={(props) => (
