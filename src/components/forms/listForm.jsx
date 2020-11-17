@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "./form";
 import Joi from "joi-browser";
-import { timestamp, firestore } from "../../firebase/firebase";
+import { timestamp, firestore, projectStorage } from "../../firebase/firebase";
 import LoadingIndicator from "../common/LoadingIndicator";
 
 class ListForm extends Form {
@@ -50,29 +50,27 @@ class ListForm extends Form {
 
   doSubmit = async () => {
     this.setState({ uploading: true });
-    const data = this.state.data;
+    const newData = { ...this.state.data };
+    const file = this.state.imageFile;
+    const uid = localStorage.getItem("uid");
 
-    const saveList = async () => {
-      await firestore
-        .collection("lists")
-        .add(data)
-        .then((docRef) => {
-          const docReff = firestore.collection("lists").doc(docRef.id);
-          docReff
-            .update({ id: docRef.id })
-            .then((doc) => {
-              console.log("Document updated: ", doc);
-              window.location = "/lists";
-            })
-            .catch((error) => {
-              console.error("Error adding document: ", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-    };
-    saveList();
+    try {
+      const storageRef = projectStorage.ref();
+      if (file) {
+        const folderRef = storageRef.child(`images/${uid}/${file.name}`);
+        await folderRef.put(file);
+        const url = await folderRef.getDownloadURL();
+        newData.image = url;
+      }
+
+      const doc = await firestore.collection("lists").add(newData);
+      newData.id = doc.id;
+      await firestore.collection("lists").doc(doc.id).update(newData);
+      this.props.history.push(`/view-list/${doc.id}`);
+      this.setState({ uploading: false });
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   };
 
   schema = {
@@ -108,18 +106,21 @@ class ListForm extends Form {
         ) : (
           <section className="">
             <div className="container mt-4 pt-4 pb-4 card shadow ">
-              <h1 className="display-5 text-center pb-4">
+              <h1 className="display-5 text-center">
                 Create a List...it can be anything
               </h1>
+              <hr />
               <form onSubmit={this.handleSubmit}>
                 <div className="row ">
                   <div className="col col-sm ">
                     <div className="card-header-custom">
-                      <div className="lead text-center">
-                        Use these fields to say where this list was meant for.
+                      <div className="text-center">
+                        <h4>
+                          {" "}
+                          Use these fields to say what this list was meant for.
+                        </h4>
                       </div>
                     </div>
-
                     {this.renderInput(
                       "title",
                       "Title",
@@ -135,11 +136,33 @@ class ListForm extends Form {
                       "Description",
                       "Give a description for where you're going to use this list, write as much or as little as you want..."
                     )}
+                    <React.Fragment>
+                      <div className="card-header-custom mt-2 mb-2">
+                        <div className="text-center">
+                          <h4>
+                            Make your list pop by addind a custom picture!{" "}
+                          </h4>
+                          <p>
+                            If you don't add one now, you can always add one
+                            later.
+                          </p>
+                        </div>
+                      </div>
+                      <input
+                        className="mb-2"
+                        onChange={(event) => {
+                          const file = event.currentTarget.files[0];
+                          this.setState({ imageFile: file });
+                        }}
+                        type="file"
+                        accept="image/*"
+                      />
+                    </React.Fragment>
                   </div>
                   <div className="col-sm">
                     <div className="card-header-custom">
-                      <div className="lead text-center">
-                        Think about what your Top 10 items would be.
+                      <div className="text-center">
+                        <h4>Think about what your Top 10 items would be.</h4>
                       </div>
                     </div>
                     <div className="row">
