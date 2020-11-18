@@ -11,8 +11,6 @@ class SimpleList extends Component {
     pageSize: 5,
     currentPage: 1,
     sortColumn: { path: "title", order: "asc" },
-    query: "",
-    searchQuery: "",
   };
 
   componentDidMount() {
@@ -44,47 +42,31 @@ class SimpleList extends Component {
   }
 
   getPageData = () => {
-    const {
-      pageSize,
-      currentPage,
-      lists: allLists,
-      sortColumn,
-      searchQuery,
-    } = this.state;
-
-    let filteredLists = allLists;
-
-    if (searchQuery) {
-      filteredLists = allLists.filter((list) =>
-        list.title.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
+    const { pageSize, currentPage, lists: allLists, sortColumn } = this.state;
 
     const sortedLists = _.orderBy(
-      filteredLists,
+      allLists,
       [sortColumn.path],
       [sortColumn.order]
     );
 
     const lists = paginate(sortedLists, currentPage, pageSize);
 
-    return { totalCount: filteredLists.length, data: lists };
+    return { totalCount: allLists.length, data: lists };
   };
 
   render() {
     const { pageSize, currentPage, sortColumn } = this.state;
     const { totalCount, data: lists } = this.getPageData();
-    const list = totalCount > 1 ? "lists" : "list";
 
-    // if (count === 0) return <p>There are no lists here</p>;
+    if (totalCount === 0) {
+      return <h4>You haven't made any lists yet! </h4>;
+    }
 
     return (
       <div className="container pt-4 list-table shadow">
         <div className="row">
           <div className="col">
-            <p>
-              You've made {totalCount} {list}, that's great!
-            </p>
             <SimpleListTable
               sortColumn={sortColumn}
               lists={lists}

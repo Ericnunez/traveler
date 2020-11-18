@@ -15,9 +15,7 @@ class SimpleListTable extends Component {
       key: "edit",
       content: (list) => (
         <Link to={`/update-list/${list.id}`}>
-          <button className="btn btn-primary btn-sm" data-dismiss="modal">
-            Edit
-          </button>
+          <button className="btn btn-primary btn-sm">Edit</button>
         </Link>
       ),
       label: "Edit",
@@ -28,8 +26,6 @@ class SimpleListTable extends Component {
         <button
           onClick={() => this.props.onDelete(list.id)}
           className="btn btn-danger btn-sm"
-          data-dismiss="modal"
-          data-target="#deleteModal"
         >
           Delete
         </button>

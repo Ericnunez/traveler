@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import profilePicture from "../../images/profile-picture.png";
 import SimpleList from "./simpleList";
 import { firestore } from "../../firebase/firebase";
 import UserCard from "./UserCard";
@@ -14,56 +13,43 @@ class ProfilePage extends Component {
     this.getRandomFact();
   }
 
-  getUserLists(uid) {
+  getUserLists = async (uid) => {
     let listArray = [];
-    const loadLatestLists = async (uid) => {
+
+    try {
       const docRef = firestore.collection("lists");
-      await docRef
-        .where("uid", "==", uid)
-        .get()
-        .then(function (snapshot) {
-          snapshot.forEach((doc) => {
-            listArray.push({ ...doc.data(), id: doc.id });
-          });
-        })
-        .catch((error) => {
-          console.log("There was an error getting latest lists", error);
-        });
-      this.setState({ lists: listArray });
-    };
-    loadLatestLists(uid);
-  }
-
-  deleteDocument(listId) {
-    firestore.collection("lists").doc(listId).delete();
-    setTimeout(function () {
-      window.location.reload();
-    }, 2500);
-  }
-
-  getRandomFact() {
-    fetch("https://uselessfacts.jsph.pl/random.json?language=en", {
-      method: "GET",
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        this.setState({ randomFact: data.text });
-      })
-      .catch((error) => {
-        console.log("There was an error getting the random fact", error);
+      const data = await docRef.where("uid", "==", uid).get();
+      data.forEach((doc) => {
+        listArray.push(doc.data());
       });
-  }
+      this.setState({ lists: listArray });
+    } catch (error) {
+      console.log("There was an error getting latest lists", error);
+    }
+  };
+
+  deleteDocument = async (listId) => {
+    await firestore.collection("lists").doc(listId).delete();
+    this.props.history.go(0);
+  };
+
+  getRandomFact = async () => {
+    try {
+      const response = await fetch(
+        "https://uselessfacts.jsph.pl/random.json?language=en"
+      );
+      const data = await response.json();
+      this.setState({ randomFact: data.text });
+    } catch (error) {
+      console.log("There was an error getting the random fact", error);
+    }
+  };
 
   render() {
     const { user } = this.props;
     return (
       <section className="profile">
-        <article className="container p-5">
+        <article className="container">
           <div className="row flex-md-row h-md-250 p-3">
             <UserCard
               height="100rem"
@@ -112,7 +98,6 @@ class ProfilePage extends Component {
                   delete={this.deleteDocument}
                 />
               )}
-              {/* TODO: Add functionality for getting this users liked lists */}
             </div>
           </div>
         </article>

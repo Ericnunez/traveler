@@ -27,7 +27,7 @@ class TableBody extends Component {
           <tr key={item.id}>
             {columns.map((column) => (
               <td
-                className={` ${column.path === "description" ? truncate : ""}`}
+                className={`${column.path === "description" ? truncate : ""}`}
                 key={this.createKey(item, column)}
               >
                 {this.renderCell(item, column)}
