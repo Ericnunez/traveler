@@ -100,9 +100,10 @@ main {
 .card-header-custom {
   background-color: #0a2540;
   color: white;
-  padding: 1.5rem 1.75rem;
+  padding: 0.75rem;
   margin-bottom: 1rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
 }
 
 .profile {
@@ -280,6 +281,11 @@ footer hr {
 
 .edge {
   background-color: transparent;
+}
+
+.form-control {
+  background-color: #fafbfc;
+  border: 1px solid #e1e4e8;
 }
 
 @media only screen and (min-width: 700px) {
