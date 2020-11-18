@@ -140,7 +140,7 @@ class ListForm extends Form {
                       <div className="card-header-custom mt-2 mb-2">
                         <div className="text-center">
                           <h4>
-                            Make your list pop by addind a custom picture!{" "}
+                            Make your list pop by adding a custom picture!{" "}
                           </h4>
                           <p>
                             If you don't add one now, you can always add one
