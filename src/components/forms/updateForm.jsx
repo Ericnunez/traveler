@@ -31,6 +31,7 @@ class UpdateForm extends Form {
     imageFile: "",
     uploading: false,
     imageUploading: false,
+    imagePreview: "",
   };
 
   componentDidMount() {
@@ -77,9 +78,14 @@ class UpdateForm extends Form {
 
   handleFileSelect = (event) => {
     const file = event.currentTarget.files[0];
-    file
-      ? this.setState({ imageFile: file })
-      : this.setState({ imageFile: "" });
+    if (file) {
+      this.setState({
+        imageFile: file,
+        imagePreview: URL.createObjectURL(event.target.files[0]),
+      });
+    } else {
+      this.setState({ imageFile: "", imagePreview: "" });
+    }
   };
 
   doSubmit = async () => {
@@ -118,7 +124,7 @@ class UpdateForm extends Form {
   };
 
   render() {
-    const { uploading, imageUploading } = this.state;
+    const { uploading, imageUploading, imagePreview } = this.state;
     if (!this.props.user) {
       window.location = "/login";
     }
@@ -162,7 +168,11 @@ class UpdateForm extends Form {
                         <React.Fragment>
                           <img
                             className="cover mb-2"
-                            src={this.state.data.image}
+                            src={
+                              imagePreview
+                                ? imagePreview
+                                : this.state.data.image
+                            }
                             alt=""
                           />
                           <div className="d-flex mb-2">
