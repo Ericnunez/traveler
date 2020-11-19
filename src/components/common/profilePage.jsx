@@ -3,6 +3,7 @@ import SimpleList from "./simpleList";
 import { firestore, getUserDocument } from "../../firebase/firebase";
 import UserCard from "./UserCard";
 import LikedLists from "./LikedLists/LikedLists";
+import UserBio from "./UserBio/UserBio";
 
 class ProfilePage extends Component {
   state = { showMyLists: true };
@@ -91,10 +92,10 @@ class ProfilePage extends Component {
           <hr className="mt-0" />
           <div className="row profile-page-lower">
             <div className="col-md-3">
-              <div className="card shadow mb-3">
-                <div className="card-header">
-                  Random Fact - Because why not?
-                </div>
+              <UserBio />
+              <hr />
+              <div className="mb-3">
+                <div className="card-header">Random Fact</div>
                 <div className="card-body">
                   <p className="card-text">{this.state.randomFact}</p>
                 </div>

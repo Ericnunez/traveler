@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,SAAS,CAAC;EAER,gBAAgB,EAAE,IAAI;EACtB,OAAO,EAAE,MAAM;CAChB",
+    "sources": [
+        "UserBio.scss"
+    ],
+    "names": [],
+    "file": "UserBio.css"
+}

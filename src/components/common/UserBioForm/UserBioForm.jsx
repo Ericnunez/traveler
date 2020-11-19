@@ -1,0 +1,70 @@
+import React from "react";
+import "./UserBioForm.css";
+
+const UserBioForm = (props) => {
+  return (
+    <div>
+      <form>
+        <div className="form-group">
+          <textarea className="form-control" id="bio" rows="3"></textarea>
+        </div>
+        <div className="d-flex align-items-center form-group">
+          <i className="fas fa-globe-americas pr-2 text-muted"></i>
+          <input
+            type="text"
+            className="form-control form-control-sm"
+            id="location"
+            placeholder="Location"
+          />
+        </div>
+        <div className="d-flex align-items-center form-group">
+          <i class="fas fa-link pr-2 text-muted"></i>
+          <input
+            type="text"
+            className="form-control form-control-sm"
+            id="website"
+            placeholder="Website"
+          />
+        </div>
+        <div className="d-flex align-items-center form-group">
+          <i class="fab fa-twitter pr-2 text-muted"></i>
+          <input
+            type="text"
+            className="form-control form-control-sm"
+            id="twitterUsername"
+            placeholder="Twitter Username"
+          />
+        </div>
+        <div className="d-flex align-items-center form-group">
+          <i class="fab fa-instagram pr-2 text-muted"></i>
+          <input
+            type="text"
+            className="form-control form-control-sm"
+            id="instagramUsername"
+            placeholder="Instagram Username"
+          />
+        </div>
+        <button
+          onClick={(e) => {
+            props.onSaveBio(e);
+          }}
+          type="button"
+          className="btn btn-success btn-sm mr-2"
+        >
+          Save
+        </button>
+        <button
+          onClick={(e) => {
+            props.onCancelBio(e);
+          }}
+          type="button"
+          className="btn btn-outline-secondary btn-sm"
+        >
+          Cancel
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default UserBioForm;
