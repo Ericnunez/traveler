@@ -55,12 +55,20 @@ main {
   pointer-events: none;
 }
 
+.header-icon {
+  -o-object-fit: contain;
+     object-fit: contain;
+  height: 65px;
+}
+
 .banner {
   color: black;
+  height: 370px;
 }
 
 .banner-bg {
   position: relative;
+  height: 370px;
 }
 
 .banner-bg h1,
@@ -70,7 +78,7 @@ main {
 
 .banner-bg::before {
   content: "";
-  background-image: url("./images/road.jpg");
+  background-image: url("https://firebasestorage.googleapis.com/v0/b/roadtripper-fc6cc.appspot.com/o/images%2Fstatic%2Fforest.jpg?alt=media&token=617e5f63-23eb-4672-911a-fa8fa60ff3d7");
   background-position: center;
   position: absolute;
   -o-object-fit: cover;
