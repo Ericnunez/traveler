@@ -1,16 +1,21 @@
 import React, { Component } from "react";
 import SimpleList from "./simpleList";
-import { firestore } from "../../firebase/firebase";
+import { firestore, getUserDocument } from "../../firebase/firebase";
 import UserCard from "./UserCard";
+import LikedLists from "./LikedLists/LikedLists";
 
 class ProfilePage extends Component {
-  state = {};
+  state = { showMyLists: true };
 
   componentDidMount() {
     const uid = localStorage.getItem("uid");
 
     this.getUserLists(uid);
     this.getRandomFact();
+    this.getLikedLists();
+    getUserDocument(uid).then((res) => {
+      this.setState({ user: res });
+    });
   }
 
   getUserLists = async (uid) => {
@@ -25,6 +30,28 @@ class ProfilePage extends Component {
       this.setState({ lists: listArray });
     } catch (error) {
       console.log("There was an error getting latest lists", error);
+    }
+  };
+
+  getLikedLists = async () => {
+    const uid = localStorage.getItem("uid");
+    const array = [];
+    const arr = [];
+
+    try {
+      const docRef = await firestore.collection("likes").doc(uid).get();
+      const allLikes = docRef.data();
+      for (const key of Object.keys(allLikes)) {
+        array.push(key);
+      }
+      const ref = firestore.collection("lists");
+      const list = await ref.where("id", "in", array).get();
+      list.forEach((doc) => {
+        arr.push(doc.data());
+      });
+      this.setState({ likedLists: arr });
+    } catch (error) {
+      console.log("There was an error getting liked lists", error);
     }
   };
 
@@ -46,18 +73,20 @@ class ProfilePage extends Component {
   };
 
   render() {
-    const { user } = this.props;
+    const { user } = this.state;
     return (
       <section className="profile">
         <article className="container">
           <div className="row flex-md-row h-md-250 p-3">
-            <UserCard
-              height="100rem"
-              width="100rem"
-              displayName={user.displayName}
-              email={user.email}
-              profilePicture={user.photoURL}
-            />
+            {this.state.user && (
+              <UserCard
+                height="100rem"
+                width="100rem"
+                displayName={this.state.user.displayName}
+                email={this.state.user.email}
+                profilePicture={this.state.user.photoURL}
+              />
+            )}
           </div>
           <hr className="mt-0" />
           <div className="row profile-page-lower">
@@ -77,27 +106,54 @@ class ProfilePage extends Component {
               </div>
             </div>
             <div className="col-md-9">
-              <ul className="nav nav-tabs nav-fill mb-3 " role="tablist">
+              <ul className="nav nav-tabs nav-fill mb-3" role="tablist">
                 <li className="nav-item">
                   <a
                     className="nav-link active"
                     data-toggle="tab"
-                    href="#projects"
+                    href="#myLists"
                     role="tab"
-                    aria-controls="projects"
-                    aria-selected="true"
+                    aria-controls="myLists"
+                    onClick={() => {
+                      this.setState({ showMyLists: true });
+                    }}
                   >
                     My Lists
                   </a>
                 </li>
+                <li className="nav-item">
+                  <a
+                    className="nav-link"
+                    data-toggle="tab"
+                    role="tab"
+                    href="#likedLists"
+                    aria-controls="likedLists"
+                    onClick={() => {
+                      this.setState({ showMyLists: false });
+                    }}
+                  >
+                    Liked Lists
+                  </a>
+                </li>
               </ul>
-              {this.state.lists && (
-                <SimpleList
-                  lists={this.state.lists}
-                  user={user}
-                  delete={this.deleteDocument}
-                />
-              )}
+              <React.Fragment>
+                {this.state.lists && this.state.showMyLists && (
+                  <React.Fragment>
+                    <SimpleList
+                      lists={this.state.lists}
+                      user={user}
+                      delete={this.deleteDocument}
+                    />
+                  </React.Fragment>
+                )}
+                {this.state.likedLists && !this.state.showMyLists && (
+                  <LikedLists
+                    lists={this.state.likedLists}
+                    user={user}
+                    delete={this.deleteDocument}
+                  />
+                )}
+              </React.Fragment>
             </div>
           </div>
         </article>
