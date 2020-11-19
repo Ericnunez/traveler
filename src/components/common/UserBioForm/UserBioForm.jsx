@@ -3,7 +3,7 @@ import "./UserBioForm.css";
 
 const UserBioForm = (props) => {
   return (
-    <div>
+    <div className="user-bio-form">
       <form>
         <div className="form-group">
           <textarea className="form-control" id="bio" rows="3"></textarea>
@@ -18,7 +18,7 @@ const UserBioForm = (props) => {
           />
         </div>
         <div className="d-flex align-items-center form-group">
-          <i class="fas fa-link pr-2 text-muted"></i>
+          <i className="fas fa-link pr-2 text-muted"></i>
           <input
             type="text"
             className="form-control form-control-sm"
@@ -27,7 +27,7 @@ const UserBioForm = (props) => {
           />
         </div>
         <div className="d-flex align-items-center form-group">
-          <i class="fab fa-twitter pr-2 text-muted"></i>
+          <i className="fab fa-twitter pr-2 text-muted"></i>
           <input
             type="text"
             className="form-control form-control-sm"
@@ -36,7 +36,7 @@ const UserBioForm = (props) => {
           />
         </div>
         <div className="d-flex align-items-center form-group">
-          <i class="fab fa-instagram pr-2 text-muted"></i>
+          <i className="fab fa-instagram pr-2 text-muted"></i>
           <input
             type="text"
             className="form-control form-control-sm"
@@ -54,8 +54,8 @@ const UserBioForm = (props) => {
           Save
         </button>
         <button
-          onClick={(e) => {
-            props.onCancelBio(e);
+          onClick={() => {
+            props.onCancelBio();
           }}
           type="button"
           className="btn btn-outline-secondary btn-sm"
