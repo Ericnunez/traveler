@@ -1,6 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/forms/form";
+import LoadingIndicator from "./common/LoadingIndicator";
 import {
   auth,
   generateUserDocument,
@@ -12,6 +13,7 @@ class Register extends Form {
     data: { email: "", password: "", name: "" },
     errors: {},
     registerError: "",
+    uploading: false,
   };
 
   schema = {
@@ -19,7 +21,7 @@ class Register extends Form {
       minDomainSegments: 2,
       tlds: { allow: ["com", "net"] },
     }),
-    name: Joi.string().max(20).required().label("Name"),
+    name: Joi.string().min(2).max(30).required().label("Name"),
     password: Joi.string().min(5).max(20).required().label("Password"),
   };
 
@@ -28,53 +30,53 @@ class Register extends Form {
   }
 
   doSubmit = async () => {
-    const { email, password, name, registerError } = this.state.data;
-    await this.createUserWithEmailAndPasswordHandler(email, password, name);
-    if (!registerError) {
-      window.location = "/";
-    }
-  };
-
-  createUserWithEmailAndPasswordHandler = async (email, password, name) => {
+    this.setState({ loading: true });
+    const { email, password, name } = this.state.data;
     try {
       const { user } = await auth.createUserWithEmailAndPassword(
         email,
         password
       );
-      user.updateProfile({
+      await user.updateProfile({
         displayName: name,
       });
-
       await generateUserDocument(user, name);
       await generateUserLikesDocument(user);
+
+      window.location = "/";
     } catch (error) {
-      if (error.code)
-        this.setState({
-          registerError: error.code.replace("auth/", ""),
-        });
+      this.setState({
+        registerError: error.code.replace("auth/", ""),
+        uploading: false,
+      });
     }
   };
 
   render() {
-    if (localStorage.getItem("uid")) window.location = "/profile-page";
     const { registerError } = this.state;
     return (
       <React.Fragment>
-        <section className="form-container">
-          <div className="container form-signin card shadow">
-            <h1 className="text-center">Roadtripper</h1>
-            <h5 className="text-center">Register</h5>
-            <form className="" onSubmit={this.handleSubmit}>
-              {this.renderInput("email", "Email")}
-              {this.renderInput("name", "Name")}
-              {this.renderInput("password", "Password")}
-              {this.renderButton("register", "btn-block")}
-            </form>
-            {registerError && (
-              <div className="alert alert-danger mt-1">{registerError}</div>
-            )}
+        {this.state.uploading ? (
+          <div className="d-flex h-100 justify-content-center align-items-center">
+            <LoadingIndicator />
           </div>
-        </section>
+        ) : (
+          <section className="form-container">
+            <div className="container form-signin card shadow">
+              <h1 className="text-center">Roadtripper</h1>
+              <h5 className="text-center">Register</h5>
+              {registerError && (
+                <div className="alert alert-danger mt-1">{registerError}</div>
+              )}
+              <form className="" onSubmit={this.handleSubmit}>
+                {this.renderInput("email", "Email")}
+                {this.renderInput("name", "Name")}
+                {this.renderInput("password", "Password")}
+                {this.renderButton("register", "btn-block")}
+              </form>
+            </div>
+          </section>
+        )}
       </React.Fragment>
     );
   }
