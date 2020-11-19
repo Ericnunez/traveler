@@ -19,25 +19,15 @@ class Login extends Form {
   };
 
   doSubmit = async () => {
-    console.log("inside doSubmit");
     const { email, password } = this.state.data;
-    await auth
-      .signInWithEmailAndPassword(email, password)
-      .then(function (user) {
-        // console.log("inside then", user.getIdToken());
-        // user.localStorage.setItem("token", user.getIdToken());
-      })
-      .catch((error) => {
-        if (error.code)
-          this.setState({
-            signinError: error.code.replace("auth/", ""),
-          });
-        setTimeout(() => {
-          window.location = state ? state.from.pathname : "/login";
-        }, 1500);
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+      window.location = "/";
+    } catch (error) {
+      this.setState({
+        signinError: error.code.replace("auth/", ""),
       });
-    const { state } = this.props.location;
-    window.location = state ? state.from.pathname : "/";
+    }
   };
 
   render() {
@@ -49,15 +39,14 @@ class Login extends Form {
           <div className="container form-signin card shadow">
             <h1 className="text-center">Roadtripper</h1>
             <h5 className="text-center">Login</h5>
+            {signinError && (
+              <div className="alert alert-danger mt-1">{signinError}</div>
+            )}
             <form className="" onSubmit={this.handleSubmit}>
               {this.renderInput("email", "Email")}
               {this.renderInput("password", "Password")}
               {this.renderButton("login", "btn-block")}
             </form>
-
-            {signinError && (
-              <div className="alert alert-danger mt-1">{signinError}</div>
-            )}
           </div>
         </section>
       </React.Fragment>

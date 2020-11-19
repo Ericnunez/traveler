@@ -30,6 +30,8 @@ class ListForm extends Form {
     errors: {},
     editing: false,
     uploading: false,
+    imageFile: "",
+    imagePreview: "",
   };
 
   componentDidMount() {
@@ -47,6 +49,18 @@ class ListForm extends Form {
   mapListToState(list) {
     this.setState({ data: list });
   }
+
+  handleFileSelect = (event) => {
+    const file = event.currentTarget.files[0];
+    if (file) {
+      this.setState({
+        imageFile: file,
+        imagePreview: URL.createObjectURL(event.target.files[0]),
+      });
+    } else {
+      this.setState({ imageFile: "", imagePreview: "" });
+    }
+  };
 
   doSubmit = async () => {
     this.setState({ uploading: true });
@@ -111,15 +125,10 @@ class ListForm extends Form {
               </h1>
               <hr />
               <form onSubmit={this.handleSubmit}>
-                <div className="row ">
+                <div className="row">
                   <div className="col col-sm ">
                     <div className="card-header-custom">
-                      <div className="text-center">
-                        <h4>
-                          {" "}
-                          Use these fields to say what this list was meant for.
-                        </h4>
-                      </div>
+                      <div className="lead">The details</div>
                     </div>
                     {this.renderInput(
                       "title",
@@ -137,32 +146,38 @@ class ListForm extends Form {
                       "Give a description for where you're going to use this list, write as much or as little as you want..."
                     )}
                     <React.Fragment>
-                      <div className="card-header-custom mt-2 mb-2">
-                        <div className="text-center">
-                          <h4>
+                      <div className="file-upload">
+                        <div className="card-header-custom mt-2 mb-2">
+                          <div className="lead">
                             Make your list pop by adding a custom picture!{" "}
-                          </h4>
+                          </div>
                           <p>
                             If you don't add one now, you can always add one
                             later.
                           </p>
                         </div>
+                        {this.state.imagePreview && (
+                          <img
+                            className="cover mb-2"
+                            src={this.state.imagePreview}
+                            alt=""
+                          />
+                        )}
+                        <input
+                          className="mb-2"
+                          onChange={(event) => {
+                            this.handleFileSelect(event);
+                          }}
+                          type="file"
+                          accept="image/*"
+                        />
                       </div>
-                      <input
-                        className="mb-2"
-                        onChange={(event) => {
-                          const file = event.currentTarget.files[0];
-                          this.setState({ imageFile: file });
-                        }}
-                        type="file"
-                        accept="image/*"
-                      />
                     </React.Fragment>
                   </div>
                   <div className="col-sm">
                     <div className="card-header-custom">
-                      <div className="text-center">
-                        <h4>Think about what your Top 10 items would be.</h4>
+                      <div className="lead">
+                        Think about what your Top 10 items would be.
                       </div>
                     </div>
                     <div className="row">

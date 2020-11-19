@@ -67,7 +67,7 @@ class LikedLists extends Component {
     const { totalCount, data: lists } = this.getPageData();
 
     if (totalCount === 0) {
-      return <h4>You haven't made any lists yet! </h4>;
+      return <h4>You haven't liked any lists yet! </h4>;
     }
 
     return (
