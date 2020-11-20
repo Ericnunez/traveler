@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import SimpleList from "./simpleList";
-import { firestore, getUserDocument } from "../../firebase/firebase";
+import {
+  firestore,
+  getUserDocument,
+  projectStorage,
+} from "../../firebase/firebase";
 import LikedLists from "./LikedLists/LikedLists";
 import UserBio from "./UserBio/UserBio";
 import UserBanner from "./UserBanner/UserBanner";
@@ -8,16 +12,9 @@ import UserBanner from "./UserBanner/UserBanner";
 class ProfilePage extends Component {
   state = { showMyLists: true };
 
-  data = {
-    bio: "something here",
-    location: "chicago",
-    website: "google.com",
-    twitterUsername: "blahblah",
-    instagramUsername: "rice baby",
-  };
-
   componentDidMount() {
     const uid = localStorage.getItem("uid");
+    this.fileRef = React.createRef();
 
     this.getUserLists(uid);
     this.getRandomFact();
@@ -81,6 +78,31 @@ class ProfilePage extends Component {
     }
   };
 
+  handleFileChange = async (event) => {
+    const uid = localStorage.getItem("uid");
+    event.stopPropagation();
+    event.preventDefault();
+    var file = event.target.files[0];
+    console.log(file);
+    if (!file) {
+      return;
+    }
+    try {
+      const obj = {};
+      const storageRef = projectStorage.ref();
+      const folderRef = storageRef.child(`images/${uid}/profilePicture`);
+      const upload = await folderRef.put(file);
+      const url = await folderRef.getDownloadURL();
+      console.log(url, "image url");
+      obj.profilePicture = url;
+      const ref = firestore.collection("users").doc(uid);
+      await ref.update(obj);
+      this.props.history.go(0);
+    } catch (error) {
+      console.log("There was a problem with the upload", error);
+    }
+  };
+
   render() {
     const { user } = this.state;
     return (
@@ -91,15 +113,28 @@ class ProfilePage extends Component {
               <UserBanner
                 height="100rem"
                 width="100rem"
-                displayName={this.state.user.displayName}
-                email={this.state.user.email}
-                profilePicture={this.state.user.photoURL}
+                data={this.state.user}
               />
             )}
             <div className="pt-2 ml-3">
-              <button type="button" className="btn btn-primary btn-sm">
+              <button
+                onClick={(e) => {
+                  this.fileRef.current.click();
+                }}
+                type="button"
+                className="btn btn-primary btn-sm"
+              >
                 Change Avatar
               </button>
+              <input
+                ref={this.fileRef}
+                type="file"
+                id="avatar"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  this.handleFileChange(e);
+                }}
+              />
             </div>
           </div>
           <hr className="mt-0" />
