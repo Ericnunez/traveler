@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import SimpleList from "./simpleList";
-import { firestore, getUserDocument } from "../../firebase/firebase";
-import UserCard from "./UserCard";
+import {
+  firestore,
+  getUserDocument,
+  projectStorage,
+} from "../../firebase/firebase";
 import LikedLists from "./LikedLists/LikedLists";
+import UserBio from "./UserBio/UserBio";
+import UserBanner from "./UserBanner/UserBanner";
 
 class ProfilePage extends Component {
   state = { showMyLists: true };
 
   componentDidMount() {
     const uid = localStorage.getItem("uid");
+    this.fileRef = React.createRef();
 
     this.getUserLists(uid);
     this.getRandomFact();
@@ -72,37 +78,77 @@ class ProfilePage extends Component {
     }
   };
 
+  handleFileChange = async (event) => {
+    const uid = localStorage.getItem("uid");
+    event.stopPropagation();
+    event.preventDefault();
+    var file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+    try {
+      const obj = {};
+      const storageRef = projectStorage.ref();
+      const folderRef = storageRef.child(`images/${uid}/profilePicture`);
+      await folderRef.put(file);
+      const url = await folderRef.getDownloadURL();
+      obj.profilePicture = url;
+      const ref = firestore.collection("users").doc(uid);
+      await ref.update(obj);
+      this.props.history.go(0);
+    } catch (error) {
+      console.log("There was a problem with the upload", error);
+    }
+  };
+
   render() {
     const { user } = this.state;
     return (
       <section className="profile">
         <article className="container">
-          <div className="row flex-md-row h-md-250 p-3">
+          <div className="d-flex flex-column row bg-white p-3">
             {this.state.user && (
-              <UserCard
+              <UserBanner
                 height="100rem"
                 width="100rem"
-                displayName={this.state.user.displayName}
-                email={this.state.user.email}
-                profilePicture={this.state.user.photoURL}
+                data={this.state.user}
               />
             )}
+            <div className="pt-2 ml-3">
+              <button
+                onClick={(e) => {
+                  this.fileRef.current.click();
+                }}
+                type="button"
+                className="btn btn-primary btn-sm"
+              >
+                Change Avatar
+              </button>
+              <input
+                ref={this.fileRef}
+                type="file"
+                id="avatar"
+                style={{ display: "none" }}
+                onChange={(e) => {
+                  this.handleFileChange(e);
+                }}
+              />
+            </div>
           </div>
           <hr className="mt-0" />
           <div className="row profile-page-lower">
-            <div className="col-md-3">
-              <div className="card shadow mb-3">
-                <div className="card-header">
-                  Random Fact - Because why not?
-                </div>
-                <div className="card-body">
-                  <p className="card-text">{this.state.randomFact}</p>
-                </div>
-                <div className="card-footer">
+            <div className="col-md-3 user-bio mb-2">
+              {this.state.user && <UserBio data={this.state.user} />}
+              <hr />
+              <div className="mb-3">
+                <div className="card-title">Random Fact</div>
+                <p className="card-text">{this.state.randomFact}</p>
+
+                <p className="card-text">
                   <small className="text-muted">
                     Facts provided by: uselessfacts.jsph.pl
                   </small>
-                </div>
+                </p>
               </div>
             </div>
             <div className="col-md-9">

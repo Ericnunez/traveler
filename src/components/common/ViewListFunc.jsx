@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import imagePlaceholder from "../../images/road.jpg";
 import LikeButton from "./likeButton";
 import shortid from "shortid";
 import LikeCounter from "./LikeCounter";
@@ -20,8 +19,7 @@ const ViewListFunc = (props) => {
   const [listId, setListId] = useState("");
   const [itemArray, setItemArray] = useState([]);
   const [userLiked, setUserLiked] = useState(false);
-  const [author, setAuthor] = useState("");
-  const [authorEmail, setAuthorEmail] = useState("");
+  const [author, setAuthor] = useState({});
 
   useEffect(() => {
     let listId = "";
@@ -72,8 +70,7 @@ const ViewListFunc = (props) => {
     const getUserDoc = async (author) => {
       await getUserDocument(author)
         .then((response) => {
-          setAuthor(response.displayName);
-          setAuthorEmail(response.email);
+          setAuthor(response);
         })
         .catch((error) => {
           console.log(
@@ -119,7 +116,11 @@ const ViewListFunc = (props) => {
               <div className="col col-sm">
                 <div className="">
                   {data.image === "" ? (
-                    <img src={imagePlaceholder} alt="" className="cover"></img>
+                    <img
+                      src="https://firebasestorage.googleapis.com/v0/b/roadtripper-fc6cc.appspot.com/o/images%2Fstatic%2Fmountain.jpg?alt=media&token=233e6bd4-0336-47da-9d73-5e75a282994f"
+                      alt=""
+                      className="cover"
+                    ></img>
                   ) : (
                     <img src={data.image} alt="" className="cover"></img>
                   )}
@@ -149,12 +150,7 @@ const ViewListFunc = (props) => {
                 </div>
                 <hr className="m-1 mb-0" />
                 {author && (
-                  <UserCard
-                    height="40rem"
-                    width="40rem"
-                    displayName={author}
-                    email={authorEmail}
-                  />
+                  <UserCard height="50rem" width="50rem" data={author} />
                 )}
 
                 <p className="p-1">{data.description}</p>

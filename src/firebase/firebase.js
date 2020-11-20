@@ -106,7 +106,13 @@ export const generateUserDocument = async (user, displayName) => {
   const userRef = firestore.doc(`users/${user.uid}`);
   const snapshot = await userRef.get();
   if (!snapshot.exists) {
-    const obj = {};
+    const obj = {
+      bio: "Add a bio!",
+      instagramUsername: "your instagram",
+      location: "The World",
+      twitterUsername: "your twitter name",
+      website: "your website",
+    };
     obj.email = user.email;
     obj.displayName = displayName;
     try {
@@ -138,6 +144,15 @@ export const getUserDocument = async (uid) => {
     };
   } catch (error) {
     console.error("Error fetching user", error);
+  }
+};
+
+export const updateUserDocument = async (uid, obj) => {
+  const ref = firestore.doc(`users/${uid}`);
+  try {
+    await ref.update(obj);
+  } catch (error) {
+    console.log("error", error);
   }
 };
 

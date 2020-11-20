@@ -1,0 +1,19 @@
+.user-bio {
+  background-color: #fff;
+  padding: 0.8rem;
+}
+.user-inner-bio {
+  display: flex;
+  flex-direction: column;
+}
+.user-info {
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.75rem;
+  // flex-wrap: nowrap;
+}
+.info-data {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}

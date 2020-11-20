@@ -8,7 +8,6 @@ import Navbar from "./components/Navbar";
 import ListForm from "./components/forms/listForm";
 import Login from "./components/login";
 import Footer from "./components/Footer";
-import ViewList from "./components/common/viewList";
 import ProfilePage from "./components/common/profilePage";
 import { auth } from "./firebase/firebase";
 import ProtectedRoute from "./components/common/protectedRoute";

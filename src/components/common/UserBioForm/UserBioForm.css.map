@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,cAAc,CAAC;EACb,WAAW,EAAE,IAAI;CAClB",
+    "sources": [
+        "UserBioForm.scss"
+    ],
+    "names": [],
+    "file": "UserBioForm.css"
+}
