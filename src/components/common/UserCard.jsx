@@ -16,10 +16,8 @@ const UserCard = ({ profilePicture, displayName, email, height, width }) => {
         ></img>
         <article className="d-flex justify-content-center">
           <div className="profile-user-details p-3">
-            <React.Fragment>
-              <h6 className="mb-0">{displayName}</h6>
-              <h6 className="text-secondary">Contact: {email}</h6>
-            </React.Fragment>
+            <h5 className="mb-0">{displayName}</h5>
+            <h5 className="text-secondary">From {email}</h5>
           </div>
         </article>
       </div>

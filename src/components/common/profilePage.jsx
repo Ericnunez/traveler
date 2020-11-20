@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import SimpleList from "./simpleList";
 import { firestore, getUserDocument } from "../../firebase/firebase";
-import UserCard from "./UserCard";
 import LikedLists from "./LikedLists/LikedLists";
 import UserBio from "./UserBio/UserBio";
+import UserBanner from "./UserBanner/UserBanner";
 
 class ProfilePage extends Component {
   state = { showMyLists: true };
@@ -86,9 +86,9 @@ class ProfilePage extends Component {
     return (
       <section className="profile">
         <article className="container">
-          <div className="row flex-md-row h-md-250 p-3">
+          <div className="d-flex flex-column row bg-white p-3">
             {this.state.user && (
-              <UserCard
+              <UserBanner
                 height="100rem"
                 width="100rem"
                 displayName={this.state.user.displayName}
@@ -96,6 +96,11 @@ class ProfilePage extends Component {
                 profilePicture={this.state.user.photoURL}
               />
             )}
+            <div className="pt-2 ml-3">
+              <button type="button" className="btn btn-primary btn-sm">
+                Change Avatar
+              </button>
+            </div>
           </div>
           <hr className="mt-0" />
           <div className="row profile-page-lower">
@@ -171,3 +176,13 @@ class ProfilePage extends Component {
 }
 
 export default ProfilePage;
+
+{
+  /* <UserCard
+                height="100rem"
+                width="100rem"
+                displayName={this.state.user.displayName}
+                email={this.state.user.email}
+                profilePicture={this.state.user.photoURL}
+              /> */
+}
