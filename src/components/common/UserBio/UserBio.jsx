@@ -1,38 +1,57 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UserBioForm from "../UserBioForm/UserBioForm";
 import "./UserBio.css";
+import { updateUserDocument } from "../../../firebase/firebase";
 
-const UserBio = () => {
+const UserBio = (props) => {
   const [showBioForm, setShowBioForm] = useState(false);
+  const [data, setData] = useState({});
+  const [editData, setEditData] = useState({});
+
+  useEffect(() => {
+    setData(props.data);
+    setEditData(props.data);
+  }, []);
 
   const handleEditProfile = () => {
     setShowBioForm(!showBioForm);
   };
 
-  const handleSaveBio = (e) => {
+  const handleSaveBio = async (e) => {
     e.preventDefault();
-    console.log("click");
+    const uid = localStorage.getItem("uid");
+    const obj = { ...editData };
+    try {
+      await updateUserDocument(uid, obj);
+      window.location.reload();
+    } catch (error) {
+      console.log("There was a problem updating your bio", error);
+    }
   };
 
   const handleCancelBio = (e) => {
     e.preventDefault();
-    console.log("click");
+    setEditData(data);
+    handleEditProfile();
+  };
+
+  const handleChange = ({ currentTarget: input }) => {
+    const update = { ...editData };
+    update[input.id] = input.value;
+    setEditData(update);
   };
 
   return (
-    <div className="user-bio">
+    <div className="">
       <div className="user-inner-bio">
-        <p>
-          Northeastern Illinois University Not saving anything for the swim
-          back. Now something here this is a placeholder and this is something
-          crazy going on!
-        </p>
+        <p>{data.bio}</p>
 
         {showBioForm ? (
           <UserBioForm
             onSaveBio={handleSaveBio}
-            onCancelBio={handleEditProfile}
+            onCancelBio={handleCancelBio}
+            handleChange={handleChange}
+            data={editData}
           />
         ) : (
           <div className="user-info">
@@ -45,19 +64,19 @@ const UserBio = () => {
             </button>
             <div className="info-data">
               <i className="fas fa-globe-americas pr-2 text-muted"></i>
-              <p>Something here</p>
+              <p>{data.location}</p>
             </div>
             <div className="info-data">
               <i className="fas fa-link pr-2 text-muted"></i>
-              <p>Something here</p>
+              <p>{data.website}</p>
             </div>
             <div className="info-data">
               <i className="fab fa-twitter pr-2 text-muted"></i>
-              <p>Something here</p>
+              <p>{data.twitterUsername}</p>
             </div>
             <div className="info-data">
               <i className="fab fa-instagram pr-2 text-muted"></i>
-              <p>Something here</p>
+              <p>{data.instagramUsername}</p>
             </div>
           </div>
         )}

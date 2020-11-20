@@ -1,16 +1,29 @@
 import React from "react";
+import { useState } from "react";
 import "./UserBioForm.css";
 
-const UserBioForm = (props) => {
+const UserBioForm = ({ data, onSaveBio, onCancelBio, handleChange }) => {
   return (
     <div className="user-bio-form">
       <form>
         <div className="form-group">
-          <textarea className="form-control" id="bio" rows="3"></textarea>
+          <textarea
+            value={data.bio}
+            onChange={(e) => {
+              handleChange(e);
+            }}
+            className="form-control"
+            id="bio"
+            rows="3"
+          ></textarea>
         </div>
         <div className="d-flex align-items-center form-group">
           <i className="fas fa-globe-americas pr-2 text-muted"></i>
           <input
+            value={data.location}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             type="text"
             className="form-control form-control-sm"
             id="location"
@@ -20,6 +33,10 @@ const UserBioForm = (props) => {
         <div className="d-flex align-items-center form-group">
           <i className="fas fa-link pr-2 text-muted"></i>
           <input
+            value={data.website}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             type="text"
             className="form-control form-control-sm"
             id="website"
@@ -29,6 +46,10 @@ const UserBioForm = (props) => {
         <div className="d-flex align-items-center form-group">
           <i className="fab fa-twitter pr-2 text-muted"></i>
           <input
+            value={data.twitterUsername}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             type="text"
             className="form-control form-control-sm"
             id="twitterUsername"
@@ -38,6 +59,10 @@ const UserBioForm = (props) => {
         <div className="d-flex align-items-center form-group">
           <i className="fab fa-instagram pr-2 text-muted"></i>
           <input
+            value={data.instagramUsername}
+            onChange={(e) => {
+              handleChange(e);
+            }}
             type="text"
             className="form-control form-control-sm"
             id="instagramUsername"
@@ -46,7 +71,7 @@ const UserBioForm = (props) => {
         </div>
         <button
           onClick={(e) => {
-            props.onSaveBio(e);
+            onSaveBio(e);
           }}
           type="button"
           className="btn btn-success btn-sm mr-2"
@@ -54,8 +79,8 @@ const UserBioForm = (props) => {
           Save
         </button>
         <button
-          onClick={() => {
-            props.onCancelBio();
+          onClick={(e) => {
+            onCancelBio(e);
           }}
           type="button"
           className="btn btn-outline-secondary btn-sm"

@@ -8,6 +8,14 @@ import UserBio from "./UserBio/UserBio";
 class ProfilePage extends Component {
   state = { showMyLists: true };
 
+  data = {
+    bio: "something here",
+    location: "chicago",
+    website: "google.com",
+    twitterUsername: "blahblah",
+    instagramUsername: "rice baby",
+  };
+
   componentDidMount() {
     const uid = localStorage.getItem("uid");
 
@@ -91,19 +99,18 @@ class ProfilePage extends Component {
           </div>
           <hr className="mt-0" />
           <div className="row profile-page-lower">
-            <div className="col-md-3">
-              <UserBio />
+            <div className="col-md-3 user-bio mb-2">
+              {this.state.user && <UserBio data={this.state.user} />}
               <hr />
               <div className="mb-3">
-                <div className="card-header">Random Fact</div>
-                <div className="card-body">
-                  <p className="card-text">{this.state.randomFact}</p>
-                </div>
-                <div className="card-footer">
+                <div className="card-title">Random Fact</div>
+                <p className="card-text">{this.state.randomFact}</p>
+
+                <p className="card-text">
                   <small className="text-muted">
                     Facts provided by: uselessfacts.jsph.pl
                   </small>
-                </div>
+                </p>
               </div>
             </div>
             <div className="col-md-9">
