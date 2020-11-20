@@ -31,11 +31,10 @@ const ShareButton = () => {
               <input
                 ref={url}
                 type="email"
-                className="form-control"
-                id="exampleInputEmail1"
+                className="form-control form-control-plaintext"
+                id="url"
                 aria-describedby="emailHelp"
                 readOnly
-                className="form-control-plaintext"
                 value={window.location.href}
               />
               <button

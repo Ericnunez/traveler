@@ -83,7 +83,6 @@ class ProfilePage extends Component {
     event.stopPropagation();
     event.preventDefault();
     var file = event.target.files[0];
-    console.log(file);
     if (!file) {
       return;
     }
@@ -91,9 +90,8 @@ class ProfilePage extends Component {
       const obj = {};
       const storageRef = projectStorage.ref();
       const folderRef = storageRef.child(`images/${uid}/profilePicture`);
-      const upload = await folderRef.put(file);
+      await folderRef.put(file);
       const url = await folderRef.getDownloadURL();
-      console.log(url, "image url");
       obj.profilePicture = url;
       const ref = firestore.collection("users").doc(uid);
       await ref.update(obj);
@@ -211,13 +209,3 @@ class ProfilePage extends Component {
 }
 
 export default ProfilePage;
-
-{
-  /* <UserCard
-                height="100rem"
-                width="100rem"
-                displayName={this.state.user.displayName}
-                email={this.state.user.email}
-                profilePicture={this.state.user.photoURL}
-              /> */
-}

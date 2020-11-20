@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import "./UserBioForm.css";
 
 const UserBioForm = ({ data, onSaveBio, onCancelBio, handleChange }) => {

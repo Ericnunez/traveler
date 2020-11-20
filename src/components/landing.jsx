@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import Banner from "./Banner";
-import altRoad from "../images/altRoad.JPG";
-import soccerGame from "../images/soccerGame.JPG";
 import { Link } from "react-router-dom";
 
 class Landing extends Component {
