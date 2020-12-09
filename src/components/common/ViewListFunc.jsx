@@ -14,6 +14,7 @@ import {
   decrementLikes,
   removeListFromUserLikedList,
 } from "../../firebase/firebase";
+import moment from "moment";
 
 const ViewListFunc = (props) => {
   const [data, setData] = useState({});
@@ -126,6 +127,12 @@ const ViewListFunc = (props) => {
                   <UserCard height="50rem" width="50rem" data={author} />
                 )}
                 <p className="p-1">{data.description}</p>
+                <p className="text-muted">
+                  {!loading &&
+                    `Created:  ${moment
+                      .unix(data.publishDate.seconds)
+                      .fromNow()}`}
+                </p>
               </div>
               <div className="col col-sm">
                 <table className="table table-viewlist table-hover table-striped">
