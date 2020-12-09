@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import LikeButton from "./likeButton";
 import shortid from "shortid";
 import LikeCounter from "./LikeCounter";
+import UserCard from "./UserCard";
+import ShareButton from "./ShareButton";
+import LoadingIndicator from "./LoadingIndicator";
 import {
   firestore,
   incrementLikes,
@@ -11,8 +14,6 @@ import {
   decrementLikes,
   removeListFromUserLikedList,
 } from "../../firebase/firebase";
-import UserCard from "./UserCard";
-import ShareButton from "./ShareButton";
 
 const ViewListFunc = (props) => {
   const [data, setData] = useState({});
@@ -20,68 +21,37 @@ const ViewListFunc = (props) => {
   const [itemArray, setItemArray] = useState([]);
   const [userLiked, setUserLiked] = useState(false);
   const [author, setAuthor] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let listId = "";
     if (!props.match.params.id) {
       window.location = "/not-found";
     }
-    listId = props.match.params.id;
+    let listId = props.match.params.id;
     setListId(listId);
-    const docRef = firestore.collection("lists").doc(listId);
+    const userId = localStorage.getItem("uid");
 
-    const checkIfListExists = async () => {
-      const response = await docRef
-        .get()
-        .then((doc) => {
-          if (!doc.exists) {
-            console.log("No such document check!");
-            window.location = "/not-found";
-          }
-        })
-        .catch((error) => {
-          console.log("Error getting document:", error);
-        });
-    };
-    checkIfListExists();
+    const docRef = firestore.collection("lists").doc(listId);
     const unsub = docRef.onSnapshot((snap) => {
       setData(snap.data());
     });
 
-    return () => unsub();
+    const initList = async () => {
+      try {
+        const liked = await checkIfUserLikedList(listId, userId);
+        setUserLiked(liked);
+        const author = data.uid;
+        const response = await getUserDocument(author);
+        setAuthor(response);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        window.location = "/not-found";
+      }
+    };
+    initList();
+    return unsub;
   }, []);
-
-  useEffect(() => {
-    const userId = localStorage.getItem("uid");
-    const check = async (userId) => {
-      await checkIfUserLikedList(data.id, userId)
-        .then((res) => {
-          setUserLiked(res);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-    check(userId);
-  }, [data]);
-
-  useEffect(() => {
-    const author = data.uid;
-    const getUserDoc = async (author) => {
-      await getUserDocument(author)
-        .then((response) => {
-          setAuthor(response);
-        })
-        .catch((error) => {
-          console.log(
-            "There was an error with the API call getting author details",
-            error
-          );
-        });
-    };
-
-    getUserDoc(author);
-  }, [data]);
 
   useEffect(() => {
     const mapDataToArray = () => {
@@ -94,21 +64,25 @@ const ViewListFunc = (props) => {
     mapDataToArray();
   }, [data]);
 
-  const handleButtonClick = (event) => {
-    if (userLiked) {
-      decrementLikes(data.id);
-      removeListFromUserLikedList(data.id, props.user.uid);
-      setUserLiked(false);
-    } else {
-      incrementLikes(data.id);
-      addUserToLikedList(data.id, props.user.uid);
-      setUserLiked(true);
+  const handleButtonClick = async (event) => {
+    try {
+      if (userLiked) {
+        setUserLiked(!userLiked);
+        await decrementLikes(data.id);
+        await removeListFromUserLikedList(data.id, props.user.uid);
+      } else {
+        setUserLiked(!userLiked);
+        await incrementLikes(data.id);
+        await addUserToLikedList(data.id, props.user.uid);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   return (
     <React.Fragment>
-      {data && (
+      {!loading ? (
         <section className="">
           <div className="container d-flex flex-column px-4">
             <h2 className="title text-center p-4">{data.title}</h2>
@@ -135,8 +109,7 @@ const ViewListFunc = (props) => {
                       {data && (
                         <LikeButton
                           handleClick={handleButtonClick}
-                          status={data.liked}
-                          enabled={!userLiked}
+                          enabled={userLiked}
                         ></LikeButton>
                       )}
                       <ShareButton />
@@ -152,7 +125,6 @@ const ViewListFunc = (props) => {
                 {author && (
                   <UserCard height="50rem" width="50rem" data={author} />
                 )}
-
                 <p className="p-1">{data.description}</p>
               </div>
               <div className="col col-sm">
@@ -180,6 +152,10 @@ const ViewListFunc = (props) => {
             </div>
           </div>
         </section>
+      ) : (
+        <div className="d-flex h-100 justify-content-center align-items-center">
+          <LoadingIndicator />
+        </div>
       )}
     </React.Fragment>
   );
