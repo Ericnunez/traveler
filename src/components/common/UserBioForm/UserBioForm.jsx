@@ -12,6 +12,7 @@ const UserBioForm = ({ data, onSaveBio, onCancelBio, handleChange }) => {
               handleChange(e);
             }}
             className="form-control"
+            placeholder="Bio"
             id="bio"
             rows="3"
           ></textarea>
