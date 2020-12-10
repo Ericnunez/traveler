@@ -108,6 +108,19 @@ export const getList = async (listId) => {
   return data;
 };
 
+export const getListAuthor = async (listId) => {
+  const docRef = firestore.doc(`lists/${listId}`);
+  let data = "";
+  try {
+    await docRef.get().then((doc) => {
+      data = doc.data();
+    });
+  } catch (error) {
+    console.log("There was a problem with the API call.", error);
+  }
+  return data.uid;
+};
+
 export const loadLatestLists = async (uid) => {
   let listArray = [];
   const docRef = firestore.collection("lists");

@@ -11,6 +11,7 @@ import {
   checkIfUserLikedList,
   addUserToLikedList,
   getUserDocument,
+  getListAuthor,
   decrementLikes,
   removeListFromUserLikedList,
 } from "../../firebase/firebase";
@@ -41,7 +42,7 @@ const ViewListFunc = (props) => {
       try {
         const liked = await checkIfUserLikedList(listId, userId);
         setUserLiked(liked);
-        const author = data.uid;
+        const author = await getListAuthor(listId);
         const response = await getUserDocument(author);
         setAuthor(response);
         setLoading(false);
@@ -123,9 +124,7 @@ const ViewListFunc = (props) => {
                   )}
                 </div>
                 <hr className="m-1 mb-0" />
-                {author && (
-                  <UserCard height="50rem" width="50rem" data={author} />
-                )}
+                <UserCard height="50rem" width="50rem" data={author} />
                 <p className="p-1">{data.description}</p>
                 <p className="text-muted">
                   {!loading &&
