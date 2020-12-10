@@ -1,0 +1,39 @@
+.landing-container {
+  display: flex;
+  margin: 0.25rem auto;
+  justify-content: center;
+}
+
+.landing-trip-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #f6f9fc;
+  padding: 1rem;
+  position: relative;
+  border-radius: 2%;
+  width: 450px;
+}
+
+.landing-trip-right {
+  position: relative;
+}
+.landing-svg {
+  // height: 250px;
+  position: relative;
+  display: none;
+}
+
+@media only screen and (min-width: 800px) {
+  .landing-svg {
+    height: 400px;
+    display: inline;
+  }
+  .landing-container {
+    flex-direction: row;
+  }
+  .landing-trip-left {
+    margin-right: 2rem;
+  }
+}
