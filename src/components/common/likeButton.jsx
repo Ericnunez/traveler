@@ -28,18 +28,18 @@ const LikeButton = (props) => {
             props.handleClick(event.currentTarget);
           }}
         >
-          <i className="far fa-heart fa-lg"></i>
+          <i className="fas fa-heart fa-lg"></i>
         </motion.button>
       ) : (
         <motion.button
-          whileHover={{ scale: 1 }}
-          whileTap={{ scale: 1 }}
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.8 }}
           style={styles}
           onClick={(event) => {
             props.handleClick(event.currentTarget);
           }}
         >
-          <i className="fas fa-heart fa-lg"></i>
+          <i className="far fa-heart fa-lg"></i>
         </motion.button>
       )}
     </motion.div>

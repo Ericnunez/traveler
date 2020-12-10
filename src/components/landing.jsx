@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Banner from "./Banner";
+import "../styles/landing.css";
 import { Link } from "react-router-dom";
 
 class Landing extends Component {
@@ -9,19 +10,32 @@ class Landing extends Component {
       <React.Fragment>
         <section className="section">
           <Banner />
-          <div className="container">
-            <h3 className="text-center pb-3 pt-3">
-              There are lists for virtually anything...
-            </h3>
-            <div className="px-2 mt-2 mb-2">
-              <p className="lead">
-                Maybe you found a really cool water bottle that saved you some
-                weight in your pack. Or you could have found the
-                <span className="font-italic"> perfect</span> hiking boots.
-                Create a list so others can see what they've been missing. Help
-                others make sure they have the trip of a lifetime.
-              </p>
+          <div className="container-fluid">
+            {/* <div className="row"> */}
+            <div className="landing-container">
+              <div className="landing-trip-left">
+                <h3 className="text-center">
+                  There are lists for virtually anything...
+                </h3>
+                <p className="lead">
+                  Maybe you found a really cool water bottle that saved you some
+                  weight in your pack. Or you could have found the
+                  <span className="font-italic"> perfect</span> hiking boots.
+                  Create a list so others can see what they've been missing.
+                  Help others make sure they have the trip of a lifetime.
+                </p>
+              </div>
+              <div className="landing-trip-right">
+                <img
+                  className="landing-svg"
+                  src="https://firebasestorage.googleapis.com/v0/b/roadtripper-fc6cc.appspot.com/o/images%2Fstatic%2Fmap.svg?alt=media&token=dbcd594e-acd5-4d9b-bcb3-d3871ba49544"
+                  alt=""
+                />
+              </div>
             </div>
+            {/* </div> */}
+          </div>
+          <div className="container">
             <div className="row">
               <div className="card-deck">
                 <div className="card shadow">
@@ -65,7 +79,7 @@ class Landing extends Component {
                       our users have submitted. Check them out and start your
                       own!
                     </p>
-                    <Link className="mt-auto" to="lists/latest-liked">
+                    <Link className="mt-auto" to="/lists">
                       <button className="btn btn-primary">Take me there</button>
                     </Link>
                   </div>

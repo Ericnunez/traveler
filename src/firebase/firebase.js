@@ -80,6 +80,34 @@ export const checkIfUserLikedList = async (listId, uid) => {
   return answer;
 };
 
+export const checkIfListExists = async (listId) => {
+  const docRef = firestore.doc(`lists/${listId}`);
+  let answer = false;
+  try {
+    await docRef.get().then((doc) => {
+      if (doc.exists) {
+        answer = true;
+      }
+    });
+  } catch (error) {
+    console.log("There was a problem with the API call.", error);
+  }
+  return answer;
+};
+
+export const getList = async (listId) => {
+  const docRef = firestore.doc(`lists/${listId}`);
+  let data = {};
+  try {
+    await docRef.get().then((doc) => {
+      data = doc.data();
+    });
+  } catch (error) {
+    console.log("There was a problem with the API call.", error);
+  }
+  return data;
+};
+
 export const loadLatestLists = async (uid) => {
   let listArray = [];
   const docRef = firestore.collection("lists");
